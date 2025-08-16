@@ -1,0 +1,21 @@
+{
+  "name": "semantic-search",
+  "version": "1.0.0",
+  "author": "Ilya Shestakov",
+  "license": "MIT",
+  "description": "Demonstration of local-first semantic search using DuckDB and Transformers",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./bundle.mjs && tsc --noEmit",
+    "build:watch": "node ./bundle.mjs && tsc --noEmit --watch",
+    "server": "serve"
+  },
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.29.1-dev132.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "serve": "^14.2.1",
+    "typescript": "^5.3.3"
+  }
+}
