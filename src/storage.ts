@@ -8,6 +8,8 @@ const _logger = new duckdb.ConsoleLogger();
 let _worker: Worker | null = null;
 let _db: duckdb.AsyncDuckDB | null = null;
 
+export type Connection = duckdb.AsyncDuckDBConnection;
+
 export type Document = {
     id: number;
     title: string;
@@ -63,14 +65,14 @@ async function initDbStructure(conn: duckdb.AsyncDuckDBConnection) {
     `);
 }
 
-export async function connectToDb() {
+export async function connectToDb(): Promise<Connection> {
     const db = await getDb();
     const conn = await db.connect();
     await initDbStructure(conn);
     return conn;
 }
 
-export async function getDocumentsCount(conn: duckdb.AsyncDuckDBConnection): Promise<number> {
+export async function getDocumentsCount(conn: Connection): Promise<number> {
     const countTbl = await conn.query<{ count: arrow.Int }>(
         `SELECT COUNT(*) as count FROM documents`
     );
@@ -78,7 +80,7 @@ export async function getDocumentsCount(conn: duckdb.AsyncDuckDBConnection): Pro
     return count;
 }
 
-export async function insertDocuments(conn: duckdb.AsyncDuckDBConnection, documents: Document[]) {
+export async function insertDocuments(conn: Connection, documents: Document[]) {
     const documentsWithEmbeddings = await Promise.all(
         documents.map(async (doc) => {
             const embedding = await getEmbedding(doc.content);
@@ -92,7 +94,7 @@ export async function insertDocuments(conn: duckdb.AsyncDuckDBConnection, docume
     });
 }
 
-export async function getDocuments(conn: duckdb.AsyncDuckDBConnection): Promise<Document[]> {
+export async function getDocuments(conn: Connection): Promise<Document[]> {
     const docs = await conn.query(
         `SELECT id, title, content
         FROM documents
@@ -107,7 +109,7 @@ export async function getDocuments(conn: duckdb.AsyncDuckDBConnection): Promise<
 }
 
 export async function searchDocuments(
-    conn: duckdb.AsyncDuckDBConnection,
+    conn: Connection,
     query: string,
     limit: number = 5
 ): Promise<DocumentSearchResult[]> {

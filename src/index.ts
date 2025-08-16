@@ -6,7 +6,6 @@ const sampleData = [
     { id: 3, title: "Birds", content: "Birds can fly, have feathers, and a beak." }
 ];
 
-
 (async () => {
     try {
         const conn = await storage.connectToDb();
@@ -17,23 +16,35 @@ const sampleData = [
 
         // Insert sample data if table is empty
         if (count == 0) {
-            storage.insertDocuments(conn, sampleData);
+            await storage.insertDocuments(conn, sampleData);
             console.log(`Inserted ${sampleData.length} sample documents into the database`);
         }
 
-        // Verify data
-        var typedDocs = await storage.getDocuments(conn);
-        console.log('Current documents:', typedDocs);
+        // Setup search button handler
+        document
+            .getElementById('searchButton')
+            ?.addEventListener('click', () => handleSearch(conn));
 
-        // Search for documents
-        const searchQuery = 'Flying animal.';
-        var results = await storage.searchDocuments(conn, searchQuery)
-        console.log(results);
-
-        await conn.close();
     } catch (e) {
         console.error(e);
-    } finally {
-        await storage.terminateDb()
     }
 })();
+
+function displayResults(results: storage.DocumentSearchResult[]) {
+    const container = document.getElementById('searchResults')!;
+    container.innerHTML = results.map(doc => `
+        <div class="result-item">
+            <h3>${doc.title}</h3>
+            <p>${doc.content}</p>
+            <small>Similarity: ${Math.round(doc.similarity * 100)}%</small>
+        </div>
+    `).join('');
+}
+
+async function handleSearch(conn: storage.Connection) {
+    const query = (document.getElementById('searchInput') as HTMLInputElement).value;
+    if (!query) return;
+
+    const results = await storage.searchDocuments(conn, query);
+    displayResults(results);
+}

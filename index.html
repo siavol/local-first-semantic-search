@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="./src/index.js"></script>
+        <title>Semantic Search Demo</title>
+        <style>
+            .search-container {
+                margin: 20px;
+                max-width: 600px;
+            }
+            #searchInput {
+                width: 300px;
+            }
+            .search-results {
+                margin-top: 20px;
+            }
+            .result-item {
+                margin-bottom: 15px;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+        </style>
+        <script src="./src/index.js" type="module"></script>
     </head>
-    <body></body>
+    <body>
+        <h1>Local-first Semantic Search</h1>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Enter search query...">
+            <button id="searchButton">Search</button>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </body>
 </html>
