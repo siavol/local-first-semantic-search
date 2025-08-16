@@ -3,12 +3,17 @@
 ## Goal
 Create a fully client-side web application (runs entirely in the browser, no backend) that performs semantic search over a set of locally stored texts using vector embeddings and a local DuckDB-WASM database.
 
+## RULES
+
+- write only the code I explicitly ask in the request, but keep in mind the final goal.
+- Always follow the "General Requirements"
+
 ---
 
 ## 1. General Requirements
 - The application must run **entirely in the browser**, with no server requests for query processing or embedding generation.
 - All data (texts, embeddings, database) must be stored **locally** in the browser.
-- Code should be kept as simple as possible, without unnecessary optimizations or heavy UI frameworks (plain JavaScript or lightweight React/Solid is acceptable).
+- Code should be kept as simple as possible, without unnecessary optimizations or heavy UI frameworks. Use TypeScript and plain HTML.
 - Support modern browsers with WebAssembly and, if available, WebGPU (with fallback to CPU/WASM).
 
 ---
