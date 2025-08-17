@@ -53,3 +53,14 @@ esbuild.build({
     minify: false,
     sourcemap: false,
 });
+
+esbuild.build({
+    entryPoints: ['./src/add.ts'],
+    outfile: './src/add.js',
+    platform: 'browser',
+    format: 'iife',
+    target: 'esnext',
+    bundle: true,
+    minify: false,
+    sourcemap: false,
+});

@@ -77,7 +77,7 @@ export async function getDocumentsCount(conn: Connection): Promise<number> {
         `SELECT COUNT(*) as count FROM documents`
     );
     const [{ count }] = countTbl.toArray();
-    return count;
+    return Number(count);  // Properly convert BigInt to number
 }
 
 export async function insertDocuments(conn: Connection, documents: Document[]) {
