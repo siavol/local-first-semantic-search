@@ -1,6 +1,7 @@
 import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
 
 const MODEL_NAME = 'Xenova/all-MiniLM-L6-v2';
+export const EMBEDDING_SIZE = 384; // Size of the embedding vector for the model
 
 let _extractor;
 

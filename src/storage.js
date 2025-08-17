@@ -1,7 +1,7 @@
 import { PGlite } from 'https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js'
 import { vector } from 'https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/vector/index.js'
 
-import { getEmbedding } from './embeddings.js';
+import { getEmbedding, EMBEDDING_SIZE } from './embeddings.js';
 
 const DB_PATH = 'idb://semsearch';
 
@@ -29,7 +29,7 @@ async function initDbStructure() {
             id INTEGER PRIMARY KEY,
             title TEXT,
             content TEXT,
-            embedding vector(384)
+            embedding vector(${EMBEDDING_SIZE})
         );
     `);
 }
