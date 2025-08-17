@@ -8,11 +8,9 @@ import * as storage from './storage.js';
 })();
 
 async function handleSubmit(event) {
-    event.preventDefault(); // Moved to top of function
+    event.preventDefault();
     
     try {
-        await storage.connectToDb();
-        
         const titleInput = document.getElementById('titleInput');
         const contentInput = document.getElementById('contentInput');
 

@@ -6,25 +6,25 @@ import { getEmbedding } from './embeddings.js';
 const DB_PATH = 'idb://semsearch';
 
 let _db;
+const initialization = (async () => {
+    console.log('Initializing PGlite');
+    await startDb();
+    await initDbStructure();
+    console.log('PGlite initialized');
+})();
 
 async function startDb() {
-    if (!_db) {
-        console.log('Creating PGlite WebAssembly instance');
-        _db = await PGlite.create(DB_PATH, {
-          extensions: {
-            vector
-          },
-        });
-        await _db.exec('CREATE EXTENSION IF NOT EXISTS vector;')
-        console.log(`PGlite with vector instanciated`);
-    }
-
-    return _db;
+    _db = await PGlite.create(DB_PATH, {
+        extensions: {
+        vector
+        },
+    });
+    await _db.exec('CREATE EXTENSION IF NOT EXISTS vector;')
 }
 
 async function initDbStructure() {
     // Create documents table
-    await _db.query(`
+    await _db.exec(`
         CREATE TABLE IF NOT EXISTS documents (
             id INTEGER PRIMARY KEY,
             title TEXT,
@@ -34,12 +34,9 @@ async function initDbStructure() {
     `);
 }
 
-export async function connectToDb() {
-    await startDb();
-    await initDbStructure();
-}
-
 export async function getDocumentsCount() {
+    await initialization; // Ensure DB is initialized before querying
+
     const ret = await _db.query(
         `SELECT COUNT(*) as count FROM documents`
     );
@@ -48,6 +45,8 @@ export async function getDocumentsCount() {
 }
 
 export async function insertDocuments(document) {
+    await initialization; // Ensure DB is initialized before querying
+
     const embedding = await getEmbedding(document.content);
     const embeddingLiteral = `[${embedding.join(",")}]`;
     await _db.query(
@@ -57,7 +56,9 @@ export async function insertDocuments(document) {
 }
 
 export async function getDocuments() {
-    const docs = await _db.query<Document>(
+    await initialization; // Ensure DB is initialized before querying
+
+    const docs = await _db.query(
         `SELECT id, title, content
         FROM documents
         ORDER BY id`
@@ -66,6 +67,8 @@ export async function getDocuments() {
 }
 
 export async function searchDocuments(query, limit = 5) {
+    await initialization; // Ensure DB is initialized before querying
+
     const searchVector = await getEmbedding(query);
     const searchVectorLiteral = `[${searchVector.join(",")}]`;
 

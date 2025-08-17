@@ -9,8 +9,6 @@ const sampleData = [
 
 (async () => {
     try {
-        await storage.connectToDb();
-
         // Check if table is empty
         const count = await storage.getDocumentsCount();
         console.log('Documents count:', count);
