@@ -1,7 +1,0 @@
-node_modules/
-
-# WebAssembly files
-wasm/
-
-# TypeScript output
-src/*.js

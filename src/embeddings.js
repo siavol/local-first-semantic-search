@@ -1,20 +1,20 @@
-import * as transformers from '@huggingface/transformers';
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
 
 const MODEL_NAME = 'Xenova/all-MiniLM-L6-v2';
 
-let _extractor: transformers.FeatureExtractionPipeline;
+let _extractor;
 
 async function getPipeline() {
     if (!_extractor) {
         console.log('Setup transformers pipeline');
-        var extractionPipeline = await transformers.pipeline('feature-extraction', MODEL_NAME);
+        var extractionPipeline = await pipeline('feature-extraction', MODEL_NAME);
         _extractor = extractionPipeline;
     }
 
     return _extractor;
 }
 
-export async function getEmbedding(text: string): Promise<number[]> {
+export async function getEmbedding(text) {
     var pipeline = await getPipeline();
     const output = await pipeline(text, { 
         pooling: 'mean', 
