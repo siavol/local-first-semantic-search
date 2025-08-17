@@ -10,7 +10,7 @@ let _db;
 async function startDb() {
     if (!_db) {
         console.log('Creating PGlite WebAssembly instance');
-        _db = new PGlite(DB_PATH, {
+        _db = await PGlite.create(DB_PATH, {
           extensions: {
             vector
           },
