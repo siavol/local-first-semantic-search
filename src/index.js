@@ -2,9 +2,9 @@ import * as storage from './storage.js';
 
 
 const sampleData = [
-    { id: 1, title: "Cats", content: "Cats are small predators often kept as pets." },
-    { id: 2, title: "Dogs", content: "Dogs are known for their loyalty and often used as guard animals." },
-    { id: 3, title: "Birds", content: "Birds can fly, have feathers, and a beak." }
+    { title: "Cats", content: "Cats are small predators often kept as pets." },
+    { title: "Dogs", content: "Dogs are known for their loyalty and often used as guard animals." },
+    { title: "Birds", content: "Birds can fly, have feathers, and a beak." }
 ];
 
 (async () => {

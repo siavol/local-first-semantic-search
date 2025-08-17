@@ -16,9 +16,7 @@ async function handleSubmit(event) {
 
         if (!titleInput.value || !contentInput.value) return;
 
-        const count = await storage.getDocumentsCount();
         const newDoc = {
-            id: count + 1, // TODO: Use a better ID generation strategy
             title: titleInput.value,
             content: contentInput.value
         };
