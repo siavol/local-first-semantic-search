@@ -26,6 +26,13 @@ const sampleData = [
             .getElementById('searchButton')
             ?.addEventListener('click', handleSearch);
 
+        // Setup search input Enter key handler
+        document
+            .getElementById('searchInput')
+            ?.addEventListener('keyup', e => {
+                if (e.key === 'Enter') handleSearch();
+            });
+
     } catch (e) {
         console.error(e);
     }
