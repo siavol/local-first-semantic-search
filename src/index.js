@@ -38,21 +38,34 @@ const sampleData = [
     }
 })();
 
-function displayResults(results) {
-    const container = document.getElementById('searchResults');
-    container.innerHTML = results.map(doc => `
-        <div class="result-item">
-            <h3>${doc.title}</h3>
-            <p>${doc.content}</p>
-            <small>Similarity: ${Math.round(doc.similarity * 100)}%</small>
-        </div>
-    `).join('');
-}
-
 async function handleSearch() {
     const query = (document.getElementById('searchInput')).value;
     if (!query) return;
 
     const results = await storage.searchDocuments(query);
     displayResults(results);
+}
+
+function displayResults(results) {
+    const container = document.getElementById('searchResults');
+
+    // Clear previous results
+    container.textContent = '';
+
+    results.forEach(doc => {
+        const resultDiv = document.createElement('div');
+        resultDiv.className = 'result-item';
+
+        const title = document.createElement('h3');
+        title.textContent = doc.title;
+
+        const content = document.createElement('p');
+        content.textContent = doc.content;
+
+        const similarity = document.createElement('small');
+        similarity.textContent = `Similarity: ${Math.round(doc.similarity * 100)}%`;
+
+        resultDiv.append(title, content, similarity);
+        container.appendChild(resultDiv);
+    });
 }
