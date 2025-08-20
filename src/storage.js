@@ -15,9 +15,7 @@ const initialization = (async () => {
 
 async function startDb() {
     _db = await PGlite.create(DB_PATH, {
-        extensions: {
-        vector
-        },
+        extensions: { vector },
     });
     await _db.exec('CREATE EXTENSION IF NOT EXISTS vector;')
 }
