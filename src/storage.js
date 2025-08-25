@@ -70,7 +70,9 @@ export async function searchDocuments(query, limit = 5) {
     const searchVector = await getEmbedding(query);
     const searchVectorLiteral = `[${searchVector.join(",")}]`;
 
-    console.log('Executing search query');
+    // This query does not use indexes effectively, 
+    // because it sorts by expression with distance operator <=>.
+    // See https://github.com/pgvector/pgvector?tab=readme-ov-file#why-isnt-a-query-using-an-index
     const result = await _db.query(`
         SELECT
             id,
