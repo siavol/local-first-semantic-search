@@ -8,7 +8,15 @@ let _extractor;
 async function getPipeline() {
     if (!_extractor) {
         console.log('Setup transformers pipeline');
-        var extractionPipeline = await pipeline('feature-extraction', MODEL_NAME);
+
+        // Check if WebGPU is available
+        const hasWebGPU = navigator.gpu !== undefined;
+        console.log(`WebGPU support: ${hasWebGPU}`);
+
+        var extractionPipeline = await pipeline('feature-extraction', MODEL_NAME, {
+            backend: hasWebGPU ? 'webgpu' : 'cpu',
+            progress_callback: reportProgress
+        });
         _extractor = extractionPipeline;
     }
 
@@ -22,4 +30,11 @@ export async function getEmbedding(text) {
         normalize: true 
     });
     return Array.from(output.data);
+}
+
+function reportProgress(progress) {
+    if (progress.status === 'progress')
+        console.log(`Loading model: ${Math.round(progress.progress)}%`);
+    else if (progress.status === 'ready')
+        console.log('Model ready');
 }
