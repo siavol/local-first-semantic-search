@@ -13,7 +13,7 @@ async function getPipeline() {
         const hasWebGPU = navigator.gpu !== undefined;
         console.log(`WebGPU support: ${hasWebGPU}`);
 
-        var extractionPipeline = await pipeline('feature-extraction', MODEL_NAME, {
+        const extractionPipeline = await pipeline('feature-extraction', MODEL_NAME, {
             backend: hasWebGPU ? 'webgpu' : 'cpu',
             progress_callback: reportProgress
         });
@@ -24,7 +24,7 @@ async function getPipeline() {
 }
 
 export async function getEmbedding(text) {
-    var pipeline = await getPipeline();
+    const pipeline = await getPipeline();
     const output = await pipeline(text, { 
         pooling: 'mean', 
         normalize: true 
